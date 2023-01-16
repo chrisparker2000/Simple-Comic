@@ -529,7 +529,7 @@
 
 - (IBAction)skipRight:(id)sender
 {
-    int index;
+    NSInteger index;
     if([[session valueForKey: TSSTPageOrder] boolValue])
     {
         index = ([pageController selectionIndex] + 10);
@@ -548,7 +548,7 @@
 
 - (IBAction)skipLeft:(id)sender
 {
-    int index;
+    NSInteger index;
     if(![[session valueForKey: TSSTPageOrder] boolValue])
     {
         index = ([pageController selectionIndex] + 10);
@@ -581,7 +581,7 @@
 /* Zoom method for the zoom segmented control. Each segment has its own tag. */
 - (IBAction)zoom:(id)sender
 {
-    int segmentTag = [[sender cell] tagForSegment: [sender selectedSegment]];
+    NSInteger segmentTag = [[sender cell] tagForSegment: [sender selectedSegment]];
     if(segmentTag == 801)
     {
         [self zoomIn: self];
@@ -647,7 +647,7 @@
 
 - (IBAction)rotate:(id)sender
 {
-    int segmentTag = [[sender cell] tagForSegment: [sender selectedSegment]];
+    NSInteger segmentTag = [[sender cell] tagForSegment: [sender selectedSegment]];
     if(segmentTag == 901)
     {
         [self rotateLeft: self];
@@ -718,7 +718,7 @@
 
 - (IBAction)launchJumpPanel:(id)sender
 {
-	[jumpField setIntValue: [pageController selectionIndex] + 1];
+	[jumpField setIntegerValue: [pageController selectionIndex] + 1];
     [self.window beginSheet: jumpPanel completionHandler:^(NSModalResponse returnCode) { }];
 }
 
@@ -801,7 +801,7 @@
 
 - (BOOL)canSelectPageIndex:(NSInteger)selection
 {
-	int index = [pageController selectionIndex];
+	NSInteger index = [pageController selectionIndex];
 	index += selection;
 	TSSTPage * selectedPage = [pageController arrangedObjects][index];
 	TSSTManagedGroup * selectedGroup = [selectedPage valueForKey: @"group"];
@@ -858,7 +858,7 @@
 {
 	if(selection != -1)
 	{
-		int index = [pageController selectionIndex];
+		NSInteger index = [pageController selectionIndex];
 		index += selection;
 		TSSTPage * selectedPage = [pageController arrangedObjects][index];
 		[pageController removeObject: selectedPage];
@@ -874,7 +874,7 @@
 	 otherwise 1. */
 	if(selection != -1)
 	{
-		int index = [pageController selectionIndex];
+		NSInteger index = [pageController selectionIndex];
 		index += selection;
 		TSSTPage * selectedPage = [pageController arrangedObjects][index];
 		
@@ -894,7 +894,7 @@
 {
 	if(selection != -1)
 	{
-		int index = [pageController selectionIndex];
+		NSInteger index = [pageController selectionIndex];
 		index += selection;
 		TSSTPage * selectedPage = [pageController arrangedObjects][index];
 		TSSTManagedGroup * selectedGroup = [selectedPage valueForKey: @"group"];
@@ -1018,8 +1018,8 @@
     and that of the next image */
 - (void)changeViewImages
 {
-    int count = [[pageController arrangedObjects] count];
-    int index = [pageController selectionIndex];
+    NSUInteger count = [[pageController arrangedObjects] count];
+    NSUInteger index = [pageController selectionIndex];
     TSSTPage * pageOne = [pageController arrangedObjects][index];
     TSSTPage * pageTwo = (index + 1) < count ? [pageController arrangedObjects][(index + 1)] : nil;
     NSString * titleString = [pageOne valueForKey: @"name"];
@@ -1169,8 +1169,8 @@ images are currently visible and then skips over them.
         return;
     }
     
-    int numberOfImages = [[pageController arrangedObjects] count];
-	int selectionIndex = [pageController selectionIndex];
+    NSUInteger numberOfImages = [[pageController arrangedObjects] count];
+	NSUInteger selectionIndex = [pageController selectionIndex];
 	if((selectionIndex + 1) >= numberOfImages)
 	{
 		return;
@@ -1207,7 +1207,7 @@ images are currently visible and then skips over them.
         return;
     }
     
-	int selectionIndex = [pageController selectionIndex];
+	NSUInteger selectionIndex = [pageController selectionIndex];
 	if((selectionIndex - 2) >= 0)
 	{
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -1337,7 +1337,7 @@ images are currently visible and then skips over them.
 
 - (BOOL)canTurnPageNext
 {
-	int selectionIndex = [pageController selectionIndex];
+	NSUInteger selectionIndex = [pageController selectionIndex];
 	if([pageController selectionIndex] >= ([[pageController content] count] - 1))
 	{
 		return NO;
@@ -1464,12 +1464,12 @@ images are currently visible and then skips over them.
 	int pageNumber = [string intValue];
 	if(pageNumber > [[pageController arrangedObjects] count])
 	{
-		[jumpField setIntValue: [[pageController arrangedObjects] count]];
+		[jumpField setIntegerValue: [[pageController arrangedObjects] count]];
 	}
 	else
 	{
 		NSBeep();
-		[jumpField setIntValue: [pageController selectionIndex] + 1];
+		[jumpField setIntegerValue: [pageController selectionIndex] + 1];
 	}
 	
 	return YES;
