@@ -647,10 +647,11 @@
 		firstPageRect.origin = imageRect.origin;
 	}
 	
-    float xOrigin = viewSize.width * xpercent;
-    float yOrigin = viewSize.height * ypercent;
-    NSPoint recenter = NSMakePoint(xOrigin - visibleRect.size.width / 2, yOrigin - visibleRect.size.height / 2);
-    [self scrollPoint: recenter];
+    // CLP - commented out for Catalina!
+    //float xOrigin = viewSize.width * xpercent;
+    //float yOrigin = viewSize.height * ypercent;
+    //NSPoint recenter = NSMakePoint(xOrigin - visibleRect.size.width / 2, yOrigin - visibleRect.size.height / 2);
+   // [self scrollPoint: recenter];
     [self setNeedsDisplay: YES];
 }
 
@@ -1336,9 +1337,11 @@
 
 - (BOOL)dragIsPossible
 {
-    return ([self horizontalScrollIsPossible] ||
-			[self verticalScrollIsPossible] && 
-			![sessionController pageSelectionInProgress]);
+    return false;
+//    CLP - drag always compromised the click to next page for me.  So I axed it.
+//    return ([self horizontalScrollIsPossible] ||
+//			[self verticalScrollIsPossible] &&
+//			![sessionController pageSelectionInProgress]);
 }
 
 
