@@ -289,14 +289,14 @@
 
 
 
-- (NSImage *)imageForPageAtIndex:(int)index
+- (NSImage *)imageForPageAtIndex:(NSInteger)index
 {
     return [[pageController arrangedObjects][index] valueForKey: @"thumbnail"];
 }
 
 
 
-- (NSString *)nameForPageAtIndex:(int)index
+- (NSString *)nameForPageAtIndex:(NSInteger)index
 {
     return [[pageController arrangedObjects][index] valueForKey: @"name"];
 }

@@ -201,6 +201,7 @@
         
         if(!(limit % 5))
         {
+            // CLP - next two lines must be called from main thread only
 			if([[self window] isVisible])
 			{
 				[self setNeedsDisplay: YES];

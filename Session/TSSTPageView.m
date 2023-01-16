@@ -290,14 +290,14 @@
     
     [firstPageImage drawInRect: [self centerScanRect: firstPageRect]
                       fromRect: NSZeroRect
-                     operation: NSCompositeSourceOver 
+                     operation: NSCompositingOperationSourceOver
                       fraction: 1.0];
     
     if([secondPageImage isValid])
     {
         [secondPageImage drawInRect: [self centerScanRect: secondPageRect]
                            fromRect: NSZeroRect
-                          operation: NSCompositeSourceOver 
+                          operation: NSCompositingOperationSourceOver
                            fraction: 1.0];
     }
 
@@ -336,7 +336,7 @@
 	if([sessionController pageSelectionInProgress])
 	{
 		NSMutableParagraphStyle * style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-		[style setAlignment: NSCenterTextAlignment];
+        [style setAlignment: NSTextAlignmentCenter];
 		NSDictionary * stringAttributes = @{NSFontAttributeName: [NSFont fontWithName: @"Lucida Grande" size: 24], 
 										   NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 1 alpha: 1.0],
 										   NSParagraphStyleAttributeName: style};
@@ -449,12 +449,12 @@
         
         if(!NSEqualRects(firstFragment, NSZeroRect))
         {
-            [firstPageImage drawInRect: NSMakeRect(0,0,NSWidth(rect), NSHeight(rect)) fromRect: firstFragment operation: NSCompositeSourceOver fraction: 1.0];
+            [firstPageImage drawInRect: NSMakeRect(0,0,NSWidth(rect), NSHeight(rect)) fromRect: firstFragment operation: NSCompositingOperationSourceOver fraction: 1.0];
         }
         
         if(!NSEqualRects(secondFragment, NSZeroRect))
         {
-            [secondPageImage drawInRect: NSMakeRect(0,0,NSWidth(rect), NSHeight(rect)) fromRect: secondFragment operation: NSCompositeSourceOver fraction: 1.0];
+            [secondPageImage drawInRect: NSMakeRect(0,0,NSWidth(rect), NSHeight(rect)) fromRect: secondFragment operation: NSCompositingOperationSourceOver fraction: 1.0];
         }
     [imageFragment unlockFocus];
     return [imageFragment autorelease];
@@ -563,8 +563,9 @@
 	secondPageRect = NSZeroRect;
     NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
     NSRect frameRect = [self frame];
-    float xpercent = NSMidX(visibleRect) / frameRect.size.width;
-    float ypercent = NSMidY(visibleRect) / frameRect.size.height;
+    // CLP unused?
+//    float xpercent = NSMidX(visibleRect) / frameRect.size.width;
+//    float ypercent = NSMidY(visibleRect) / frameRect.size.height;
     NSSize imageSize = [self combinedImageSizeForZoom: [[[sessionController session] valueForKey: TSSTZoomLevel] floatValue]];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
@@ -740,12 +741,12 @@
 		return;
 	}
 	
-	int modifier = [theEvent modifierFlags];
+    NSEventModifierFlags modifier = [theEvent modifierFlags];
 	NSUserDefaults * defaultsController = [NSUserDefaults standardUserDefaults];
 	int scaling = [[[sessionController session] valueForKey: TSSTPageScaleOptions] intValue];
 	scaling = [sessionController currentPageIsText] ? 2 : scaling;
 		
-	if((modifier & NSCommandKeyMask) && [theEvent deltaY])
+    if((modifier & NSEventModifierFlagCommand) && [theEvent deltaY])
 	{
 		int loupeDiameter = [[defaultsController valueForKey: TSSTLoupeDiameter] intValue];
 		loupeDiameter += [theEvent deltaY] > 0 ? 30 : -30;
@@ -753,7 +754,7 @@
 		loupeDiameter = loupeDiameter > 500 ? 500 : loupeDiameter;
 		[defaultsController setValue: @(loupeDiameter) forKey: TSSTLoupeDiameter];
 	}
-	else if((modifier & NSAlternateKeyMask) && [theEvent deltaY])
+    else if((modifier & NSEventModifierFlagOption) && [theEvent deltaY])
 	{
 		float loupePower = [[defaultsController valueForKey: TSSTLoupePower] floatValue];
 		loupePower += [theEvent deltaY] > 0 ? 1 : -1;
@@ -807,8 +808,8 @@
 		return;
 	}
 	
-    int modifier = [event modifierFlags];
-    BOOL shiftKey = modifier & NSShiftKeyMask ? YES : NO;
+    NSEventModifierFlags modifier = [event modifierFlags];
+    BOOL shiftKey = modifier & NSEventModifierFlagShift ? YES : NO;
     NSNumber * charNumber = @([[event charactersIgnoringModifiers] characterAtIndex: 0]);
     NSRect visible = [[self enclosingScrollView] documentVisibleRect];
     NSPoint scrollPoint = visible.origin;
@@ -1023,7 +1024,7 @@
 
 - (void)flagsChanged:(NSEvent *)theEvent
 {
-    if([theEvent type] & NSKeyDown && [theEvent modifierFlags] & NSCommandKeyMask)
+    if([theEvent type] & NSEventTypeKeyDown && [theEvent modifierFlags] & NSEventModifierFlagCommand)
     {
         scrollKeys = 0;
     }
@@ -1221,15 +1222,15 @@
 	}
     else if([self dragIsPossible])
     {
-        while ([theEvent type] != NSLeftMouseUp)
+        while ([theEvent type] != NSEventTypeLeftMouseUp)
         {
-            if ([theEvent type] == NSLeftMouseDragged)
+            if ([theEvent type] == NSEventTypeLeftMouseDragged)
             {
                 currentPoint = [theEvent locationInWindow];
                 [self scrollPoint: NSMakePoint(viewOrigin.x + cursor.x - currentPoint.x,viewOrigin.y + cursor.y - currentPoint.y)];
                 [sessionController refreshLoupePanel];
             }
-            theEvent = [[self window] nextEventMatchingMask: NSLeftMouseUpMask | NSLeftMouseDraggedMask];
+            theEvent = [[self window] nextEventMatchingMask: NSEventMaskLeftMouseUp | NSEventMaskLeftMouseDragged];
         }
         [[self window] invalidateCursorRectsForView: self];
     }
@@ -1259,7 +1260,7 @@
     {
         if(clickPoint.x < viewSplit)
         {
-            if([theEvent modifierFlags] & NSAlternateKeyMask)
+            if([theEvent modifierFlags] & NSEventModifierFlagOption)
             {
                 [NSApp sendAction: @selector(shiftPageLeft:) to: nil from: self];
             }
@@ -1270,7 +1271,7 @@
         }
         else
         {
-            if([theEvent modifierFlags] & NSAlternateKeyMask)
+            if([theEvent modifierFlags] & NSEventModifierFlagOption)
             {
                 [NSApp sendAction: @selector(shiftPageRight:) to: nil from: self];
             }
