@@ -163,7 +163,8 @@
     int frameCount = ([[testImageRep valueForProperty: NSImageFrameCount] intValue] - 1);
     int currentFrame = [[testImageRep valueForProperty: NSImageCurrentFrame] intValue];
     
-    currentFrame = currentFrame < frameCount ? ++currentFrame : 0;
+    ++currentFrame;
+    currentFrame = currentFrame < frameCount ? currentFrame : 0;
     if(currentFrame == 0 && loopCount > 1)
     {
         --loopCount;
@@ -562,8 +563,8 @@
 	firstPageRect = NSZeroRect;
 	secondPageRect = NSZeroRect;
     NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
-    NSRect frameRect = [self frame];
     // CLP unused?
+//    NSRect frameRect = [self frame];
 //    float xpercent = NSMidX(visibleRect) / frameRect.size.width;
 //    float ypercent = NSMidY(visibleRect) / frameRect.size.height;
     NSSize imageSize = [self combinedImageSizeForZoom: [[[sessionController session] valueForKey: TSSTZoomLevel] floatValue]];
