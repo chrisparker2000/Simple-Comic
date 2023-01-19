@@ -72,7 +72,7 @@ NSString * TSSTSessionEndNotification = @"sessionEnd";
 
 static NSArray * allAvailableStringEncodings(void)
 {
-    NSStringEncoding encodings[] = {
+    CFStringEncoding encodings[] = {
         kCFStringEncodingMacRoman,
         kCFStringEncodingISOLatin1,
         kCFStringEncodingASCII,
@@ -129,13 +129,13 @@ static NSArray * allAvailableStringEncodings(void)
         kCFStringEncodingWindowsVietnamese,
         kCFStringEncodingDOSPortuguese,
         kCFStringEncodingWindowsBalticRim,
-        NSNotFound
+        0xFFFFFFFF
     };
     
     NSMutableArray * codeNumbers = [NSMutableArray array];
     int counter = 0;
     NSStringEncoding encoding;
-    while(encodings[counter] != NSNotFound)
+    while(encodings[counter] != 0xFFFFFFFF)
     {
         if(encodings[counter] != 101)
         {
