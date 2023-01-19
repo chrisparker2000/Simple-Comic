@@ -234,7 +234,9 @@
     }
     else if([keyPath isEqualToString: @"arrangedObjects.@count"])
     {
-        [NSThread detachNewThreadSelector: @selector(processThumbs) toTarget: exposeView withObject: nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [(TSSTThumbnailView *)exposeView processThumbs];
+        });
         [self changeViewImages];
     }
     else if([keyPath isEqualToString: TSSTPageOrder])
@@ -711,7 +713,9 @@
         [(TSSTThumbnailView *)exposeView buildTrackingRects];
         [exposeBezel setFrame: [[[self window] screen] frame] display: NO];
         [exposeBezel makeKeyAndOrderFront: self];
-        [NSThread detachNewThreadSelector: @selector(processThumbs) toTarget: exposeView withObject: nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [(TSSTThumbnailView *)exposeView processThumbs];
+        });
     }
 }
 
