@@ -28,7 +28,8 @@ NSMutableArray * fileListForArchive(XADArchive * archive)
         fileName = [archive nameOfEntry: index];
 		XADPath * dataString = [archive rawNameOfEntry: index];
 		rawName = [dataString stringWithEncoding: NSNonLossyASCIIStringEncoding];
-        if([[NSImage imageFileTypes] containsObject: [fileName pathExtension]])
+        NSString * filetype = (NSString *) UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef) [fileName pathExtension], NULL);
+        if([[NSImage imageTypes] containsObject: filetype ])
         {
             fileDescription = [NSDictionary dictionaryWithObjectsAndKeys: fileName, @"name",
                                [NSNumber numberWithInt: index], @"index",

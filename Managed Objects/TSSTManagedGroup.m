@@ -144,6 +144,7 @@
 	{
 		nestedDescription = nil;
 		fileExtension = [[path pathExtension] lowercaseString];
+        NSString * filetype = (NSString *) UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef) fileExtension, NULL);
 		fullPath = [folderPath stringByAppendingPathComponent: path];
 		exists = [fileManager fileExistsAtPath: fullPath isDirectory: &isDirectory];
 		if(exists && ![[[path lastPathComponent] substringToIndex: 1] isEqualToString: @"."])
@@ -169,7 +170,7 @@
 				[nestedDescription setValue: path forKey: @"name"];
 				[(TSSTManagedPDF *)nestedDescription pdfContents];
 			}
-			else if([[TSSTPage imageExtensions] containsObject: fileExtension])
+			else if([[TSSTPage imageExtensions] containsObject: filetype])
 			{
 				nestedDescription = [NSEntityDescription insertNewObjectForEntityForName: @"Image" inManagedObjectContext: [self managedObjectContext]];
 				[nestedDescription setValue: fullPath forKey: @"imagePath"];
@@ -363,7 +364,8 @@
         if(!([fileName isEqualToString: @""] || [[[fileName lastPathComponent] substringToIndex: 1] isEqualToString: @"."]))
         {
             extension = [[fileName pathExtension] lowercaseString];
-            if([[TSSTPage imageExtensions] containsObject: extension])
+            NSString * filetype = (NSString *) UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef) extension, NULL);
+            if([[TSSTPage imageExtensions] containsObject: filetype])
             {
                 nestedDescription = [NSEntityDescription insertNewObjectForEntityForName: @"Image" inManagedObjectContext: [self managedObjectContext]];
 				[nestedDescription setValue: fileName forKey: @"imagePath"];

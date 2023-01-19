@@ -35,6 +35,7 @@ Copyright (c) 2006-2009 Dancing Tortoise Software
 }
 
 + (NSArray *)imageExtensions;
++ (NSArray *)imageExtensions2;
 + (NSArray *)textExtensions;
 - (NSString *)name;
 //- (NSString *)deconflictionName;

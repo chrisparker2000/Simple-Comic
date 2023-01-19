@@ -639,6 +639,9 @@ static NSArray * allAvailableStringEncodings(void)
 	{
 		fileDescription = nil;
 		fileExtension = [[path pathExtension] lowercaseString];
+        
+        NSString * filetype = (NSString *) UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef) fileExtension, NULL);
+        
 		exists = [fileManager fileExistsAtPath: path isDirectory: &isDirectory];
 		if(exists && ![[[path lastPathComponent] substringToIndex: 1] isEqualToString: @"."])
 		{
@@ -663,7 +666,7 @@ static NSArray * allAvailableStringEncodings(void)
 				[fileDescription setValue: [path lastPathComponent] forKey: @"name"];
 				[(TSSTManagedPDF *)fileDescription pdfContents];
 			}
-			else if([[TSSTPage imageExtensions] containsObject: fileExtension] || [[TSSTPage textExtensions] containsObject: fileExtension])
+			else if([[TSSTPage imageExtensions] containsObject: filetype] || [[TSSTPage textExtensions] containsObject: fileExtension])
 			{
 				fileDescription = [NSEntityDescription insertNewObjectForEntityForName: @"Image" inManagedObjectContext: [self managedObjectContext]];
 				[fileDescription setValue: path forKey: @"imagePath"];
@@ -710,7 +713,7 @@ static NSArray * allAvailableStringEncodings(void)
     NSString * filePath;
     
 	NSMutableArray * allAllowedFilesExtensions = [NSMutableArray arrayWithArray: [TSSTManagedArchive archiveExtensions]];
-	[allAllowedFilesExtensions addObjectsFromArray: [TSSTPage imageExtensions]];
+	[allAllowedFilesExtensions addObjectsFromArray: [TSSTPage imageExtensions2]];
     [addPagesModal setAllowedFileTypes:allAllowedFilesExtensions];
 
 	if([addPagesModal runModal] !=  NSModalResponseCancel)

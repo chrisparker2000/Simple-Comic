@@ -44,13 +44,25 @@ static NSSize monospaceCharacterSize;
 	static NSMutableArray * imageTypes = nil;
 	if(!imageTypes)
 	{
-		imageTypes = [NSMutableArray arrayWithArray: [NSImage imageFileTypes]];
+		imageTypes = [NSMutableArray arrayWithArray: [NSImage imageTypes]];
 		[imageTypes removeObject: @"pdf"];
 		[imageTypes removeObject: @"eps"];
 		[imageTypes retain];
 	}
 	
 	return imageTypes;
+}
+
++ (NSArray *)imageExtensions2
+{
+    NSArray * imageTypes = [self imageExtensions];
+    NSMutableArray * returnArray = [NSMutableArray arrayWithCapacity:imageTypes.count];
+    for (int i=0; i< [imageTypes count]; i++)
+    {
+        NSString * filetype = (NSString *) UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef) imageTypes[i], NULL);
+        [returnArray addObject: filetype];
+    }
+    return returnArray;
 }
 
 + (NSArray *)textExtensions
